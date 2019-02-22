@@ -1,3 +1,4 @@
+'''BlackJack game'''
 import random
 
 suits = ("Hearts", "Spades", "Diamonds", "Clubs")
