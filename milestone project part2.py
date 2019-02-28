@@ -89,13 +89,81 @@ def hit(deck, hand):
     hand.add_card(deck.deal())
     hand.adjust_for_ace()
 
-def hit_or_stand(deck, hand):
+def hit_or_stand(deck,hand):
     global playing
-    player_choice = str(input("Hit or Stand")).lower()
-    if player_choice == 'hit':
-        card =deck.deal()
-        hit(card, hand.add_card(card))
-    elif player_choice == 'stand':
+    while True:
+        player_choice = str(input("Hit or Stand")).lower()
+        if player_choice == 'hit':
+            hit(card, hand)
+        elif player_choice == 'stand':
+            print("Player stands Dealer's turn")
+            playing = False
+        else:
+            print("Sorry, I did not understand that. Please enter hit or stand")
+            continue
+        break
+
+def show_some(player, dealer):
+    print("\nDealer's Hand:")
+    print(" <card hidden>")
+    print('', dealer.cards[1])
+    print("\nPlayer's Hand:", *player.cards, sep='\n ')
+
+def show_all(player, dealer):
+    print("\nDealer's Hand", *dealer.cards, sep='\n ')
+    print("Dealer's Hand = ", dealer.value)
+    print("\nPlayer's Hand:", *player.cards, sep='\n ')
+    print("Player's Hand =", player.value)
+
+def player_busts(player, dealer, chips):
+    print("Player busts!")
+    chips.lose_bet()
+
+def player_wins(player, dealer, chips):
+    print("Player Wins!")
+    chips.win_bet()
+
+def dealer_busts(player, dealer, chips):
+    print("Dealer busts!")
+    chips.win_bet()
+
+def dealer_wins(player, dealer, chips):
+    print("Dealer wins")
+    chips.lose_bet()
+
+def push(player, dealer):
+    print("Dealer and Player tie! It's a push.")
+
+while True:
+    # Print an opening statement
+    print('Welcome to BlackJack! Get as close to 21 as you can without going over!\n\
+    Dealer hits until she reaches 17. Aces count as 1 or 11.')
+
+    #Create & shuffle the deck, deal two cards to each player
+    deck = Deck()
+    deck.shuffle()
+
+    player_hand = Hand()
+    player_hand.add_card(deck.deal())
+    player_hand.add_card(deck.deal())
+
+    dealer_hand = Hand()
+    dealer_hand.add_card(deck.deal())
+    dealer_hand.add_card(deck.deal())
+
+    #set up player chips
+    player_chips = Chips()
+
+    #Prompt player for bet
+    take_bet(player_chips)
+
+    #Show cards (but keep one dealer card hidden)
+    show_some(player_hand, dealer_hand)
+
+    while playing:
+
+        #Prompt for Player to Hit or Stand
+        hit_or_stand(deck, player_hand)
 
 
 
